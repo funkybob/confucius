@@ -12,6 +12,7 @@ setup(
     long_description=description,
     author='Curtis Maloney',
     author_email='curtis@tinbrain.net',
+    url='http://github.com/funkybob/confucius',
     py_modules=['confucius'],
     license='MIT',
     classifiers=[
