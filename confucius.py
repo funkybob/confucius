@@ -15,7 +15,7 @@ class MetaConfig(type):
         # - all the __types__ dicts.
         # - all the attribute types
         for parent in reversed(bases):
-            types.update(getattr(parent, '__types__', {})
+            types.update(getattr(parent, '__types__', {}))
             attr_types.update({
                 k: v
                 for k, v in get_type_hints(parent).items()
@@ -28,9 +28,9 @@ class MetaConfig(type):
 
         # Validate we don't re-type anything
         for k, v in get_type_hints(new_cls).items():
-            if not k.isupper() or not k in type_map:
+            if not k.isupper() or k not in attr_types:
                 continue
-            assert v == type_map[k], f"Type of locally declared {k} ({v}) does not match parent ({type_map[k]})"
+            assert v == attr_types[k], f"Type of locally declared {k} ({v}) does not match parent ({attr_types[k]})"
 
         return new_cls
 
@@ -66,4 +66,3 @@ class MetaConfig(type):
 
 class BaseConfig(object, metaclass=MetaConfig):
     '''Base Config class'''
-
