@@ -43,13 +43,17 @@ Quick Start
 Types
 =====
 
-Any `ANGRY_SNAKE_CASE` attributes of a `BaseConfig` sub-class will be intercepted by the meta-class, and checked for in the environment using `os.getenv`.
+Any ``ANGRY_SNAKE_CASE`` attributes of a ``BaseConfig`` sub-class will be
+intercepted by the meta-class, and checked for in the environment using
+``os.getenv``.
 
-Their type will be determined by their annotation in the class, or fall back to `str`.
+Their type will be determined by their annotation in the class, or fall back to
+``str``.
 
-Methods will automatically behave like `property`s, with access to `self`.
+Methods will automatically behave like a ``property``, with access to ``self``.
 
-Handling of type casting can be overridden [as it is for bool] by adding it to the `__types__` dict:
+Handling of type casting can be overridden [as it is for bool] by adding it to
+the ``__types__`` dict:
 
 .. code-block:: python
 
@@ -60,9 +64,29 @@ Handling of type casting can be overridden [as it is for bool] by adding it to t
         
         LOGGING : json = {'version': 1 ...}
 
-All types defined on parent `Config` classes will be merged with this dict.
+All types defined on parent ``Config`` classes will be merged with this dict.
 
 Inheritance
 ===========
 
-Classes, as usual, inherit from their parents.  If the type of an attribute is changed, it will raise an `AssertionError`.
+Classes, as usual, inherit from their parents.  If the type of an attribute is
+changed, it will raise an ``AssertionError``.
+
+Methods
+=======
+
+Method in all-caps will be invoked, and can access ``self`` as usual:
+
+.. code-block:: python
+
+   class Config(BaseConfig):
+      DB_ENGING = 'postgresql'
+      DB_HOST = 'localhost'
+      DB_PORT : int = 5432
+      DB_USER = 'test_user'
+      DB_PASS = 'secret'
+      DB_NAME = 'test-db'
+
+      def CONNECTION_STRING(self):
+          return f'{self.DB_ENGINE}://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}/{self.DB_NAME}'
+
