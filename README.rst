@@ -90,3 +90,15 @@ Method in all-caps will be invoked, and can access ``self`` as usual:
       def CONNECTION_STRING(self):
           return f'{self.DB_ENGINE}://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}/{self.DB_NAME}'
 
+
+Using in Django
+---------------
+
+
+In your ``settings.py``, put your settings class (or classes), then use the following code to select one to use:
+
+.. code-block:: python
+
+   import os
+   MODE = os.getenv('DJANGO_MODE', 'Local')
+   globals().update(globals()[f'{ MODE.title() }Settings'].as_dict())
