@@ -80,7 +80,7 @@ Method in all-caps will be invoked, and can access ``self`` as usual:
 .. code-block:: python
 
    class Config(BaseConfig):
-      DB_ENGING = 'postgresql'
+      DB_ENGINE = 'postgresql'
       DB_HOST = 'localhost'
       DB_PORT : int = 5432
       DB_USER = 'test_user'
