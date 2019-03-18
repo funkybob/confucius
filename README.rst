@@ -102,3 +102,29 @@ In your ``settings.py``, put your settings class (or classes), then use the foll
    import os
    MODE = os.getenv('DJANGO_MODE', 'Local')
    globals().update(globals()[f'{ MODE.title() }Settings'].as_dict())
+
+
+With Python 3.7
+===============
+
+In Python 3.7, a new feature was added which allowed you to define
+`__getattr__` for a module (See `PEP 562`
+<https://www.python.org/dev/peps/pep-0562/>).
+
+The `BaseConfig` metaclass provides a `module_getattr` factory method to
+provide a `__getattr__` that will look up the `Config` object.
+
+
+.. code-block:: python
+
+   from confucius import BaseConfig
+
+   class Config(BaseConfig):
+       DB_HOST = 'localhost'
+       DB_PORT = 5432
+
+   __getattr__ = Config.module_getattr()
+
+
+After importing this module, attempts to access attributes will resolve
+normally and, if they're not found, call `__getattr__`, just like on an object.
