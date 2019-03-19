@@ -111,8 +111,8 @@ In Python 3.7, a new feature was added which allowed you to define
 `__getattr__` for a module (See `PEP 562`
 <https://www.python.org/dev/peps/pep-0562/>).
 
-The `BaseConfig` metaclass provides a `module_getattr` factory method to
-provide a `__getattr__` that will look up the `Config` object.
+The `BaseConfig` metaclass provides a `module_getattr_factory` factory method
+to provide a `__getattr__` that will look up the `Config` object.
 
 
 .. code-block:: python
@@ -123,7 +123,7 @@ provide a `__getattr__` that will look up the `Config` object.
        DB_HOST = 'localhost'
        DB_PORT = 5432
 
-   __getattr__ = Config.module_getattr()
+   __getattr__ = Config.module_getattr_factory()
 
 
 After importing this module, attempts to access attributes will resolve

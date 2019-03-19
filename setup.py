@@ -7,7 +7,7 @@ with open('README.rst') as fin:
 
 setup(
     name='confucius',
-    version='1.0.2',
+    version='1.0.3',
     description='An easy way to provide environ backed config in your projects.',
     long_description=description,
     author='Curtis Maloney',

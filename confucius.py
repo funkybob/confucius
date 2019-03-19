@@ -63,7 +63,7 @@ class MetaConfig(type):
 
         return value
 
-    def module_getattr(cls):
+    def module_getattr_factory(cls):
         """
         Factory function to build a module-level __getattr__ for tools (like
         Django) which need a whole-module settings.
