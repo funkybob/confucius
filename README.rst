@@ -94,8 +94,8 @@ Method in all-caps will be invoked, and can access ``self`` as usual:
 Using in Django
 ---------------
 
-
-In your ``settings.py``, put your settings class (or classes), then use the following code to select one to use:
+In your ``settings.py``, put your settings class (or classes), then use the
+following code to select one to use:
 
 .. code-block:: python
 
@@ -108,11 +108,11 @@ With Python 3.7
 ===============
 
 In Python 3.7, a new feature was added which allowed you to define
-`__getattr__` for a module (See `PEP 562`
-<https://www.python.org/dev/peps/pep-0562/>).
+``__getattr__`` for a module (See `PEP 562
+<https://www.python.org/dev/peps/pep-0562/>`_).
 
-The `BaseConfig` metaclass provides a `module_getattr_factory` factory method
-to provide a `__getattr__` that will look up the `Config` object.
+The ``BaseConfig`` metaclass provides a ``module_getattr_factory`` factory
+method to provide a ``__getattr__`` that will look up the ``Config`` object.
 
 
 .. code-block:: python
@@ -127,4 +127,5 @@ to provide a `__getattr__` that will look up the `Config` object.
 
 
 After importing this module, attempts to access attributes will resolve
-normally and, if they're not found, call `__getattr__`, just like on an object.
+normally and, if they're not found, call ``__getattr__``, just like on an
+object.
