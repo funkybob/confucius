@@ -4,25 +4,23 @@ from typing import get_type_hints
 
 class MetaConfig(type):
     __types__ = {
-        bool: lambda v: str(v).lower() in {'yes', 'y', 't', 'true', '1', 'on'},
+        bool: lambda v: str(v).lower() in {"yes", "y", "t", "true", "1", "on"},
     }
 
-    def __new__(cls, name, bases, namespace, **kwargs):
-        namespace['__slots__'] = ()
+    def __new__(cls, name, bases, namespace, resolvers=None, **kwargs):
+        namespace["__slots__"] = ()
         types = {}
         attr_types = {}
         # Walk the parents and collate:
         # - all the __types__ dicts.
         # - all the attribute types
         for parent in reversed(bases):
-            types.update(getattr(parent, '__types__', {}))
-            attr_types.update({
-                k: v
-                for k, v in get_type_hints(parent).items()
-                if k.isupper()
-            })
-        types.update(namespace.get('__types__', {}))
-        namespace['__types__'] = types
+            types.update(getattr(parent, "__types__", {}))
+            attr_types.update({k: v for k, v in get_type_hints(parent).items() if k.isupper()})
+        types.update(namespace.get("__types__", {}))
+        namespace["__types__"] = types
+
+        namespace["resolvers"] = resolvers or []
 
         new_cls = type.__new__(cls, name, bases, namespace, **kwargs)
 
@@ -35,14 +33,10 @@ class MetaConfig(type):
         return new_cls
 
     def __call__(cls):
-        raise TypeError(f'Can not create instance of singleton config {cls.__name__}')
+        raise TypeError(f"Can not create instance of singleton config {cls.__name__}")
 
     def as_dict(cls):
-        return {
-            key: getattr(cls, key)
-            for key in dir(cls)
-            if key.isupper()
-        }
+        return {key: getattr(cls, key) for key in dir(cls) if key.isupper()}
 
     def __getattribute__(cls, key):
         if not key.isupper():
@@ -68,8 +62,9 @@ class MetaConfig(type):
         Factory function to build a module-level __getattr__ for tools (like
         Django) which need a whole-module settings.
 
-        __getattr__ = config_getattr(config)
+        __getattr__ = config.module_getattr_factory()
         """
+
         def __getattr__(name):
             return getattr(cls, name)
 
@@ -77,4 +72,4 @@ class MetaConfig(type):
 
 
 class BaseConfig(object, metaclass=MetaConfig):
-    '''Base Config class'''
+    """Base Config class"""
