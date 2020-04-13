@@ -7,7 +7,7 @@ class MetaConfig(type):
         bool: lambda v: str(v).lower() in {"yes", "y", "t", "true", "1", "on"},
     }
 
-    def __new__(cls, name, bases, namespace, resolvers=None, **kwargs):
+    def __new__(cls, name, bases, namespace, **kwargs):
         namespace["__slots__"] = ()
         types = {}
         attr_types = {}
@@ -19,8 +19,6 @@ class MetaConfig(type):
             attr_types.update({k: v for k, v in get_type_hints(parent).items() if k.isupper()})
         types.update(namespace.get("__types__", {}))
         namespace["__types__"] = types
-
-        namespace["resolvers"] = resolvers or []
 
         new_cls = type.__new__(cls, name, bases, namespace, **kwargs)
 
@@ -44,13 +42,13 @@ class MetaConfig(type):
 
         raw = super().__getattribute__(key)
 
-        _type = get_type_hints(cls).get(key, None)
         if callable(raw):
             raw = raw(cls)
 
-        _type = cls.__types__.get(_type, _type)
-
         value = getenv(key, raw)
+
+        _type = get_type_hints(cls).get(key, None)
+        _type = cls.__types__.get(_type, _type)
 
         if _type is not None:
             value = _type(value)
