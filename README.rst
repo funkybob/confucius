@@ -121,7 +121,7 @@ method to provide a ``__getattr__`` that will look up the ``Config`` object.
 
    class Config(BaseConfig):
        DB_HOST = 'localhost'
-       DB_PORT = 5432
+       DB_PORT : int = 5432
 
    __getattr__ = Config.module_getattr_factory()
 
